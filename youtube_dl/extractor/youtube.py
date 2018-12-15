@@ -227,10 +227,21 @@ class YoutubeBaseInfoExtractor(InfoExtractor):
 
                 tfa_results = req(
                     self._TFA_URL.format(tl), tfa_req,
-                    'Submitting TFA code', 'Unable to submit TFA code')
+                    'Submitting TFA code', 'Unable to submit TFA code, trying another way')
 
                 if tfa_results is False:
-                    return False
+                    tfa_req = [
+                        user_hash, None, 2, None,
+                        [
+                            9, None, None, None, None, None, None, None,
+                            [None, tfa_code, True, 2]
+                        ]]
+                    tfa_results = req(
+                        self._TFA_URL.format(tl), tfa_req,
+                        'Submitting TFA code', 'Unable to submit TFA code')
+
+                    if tfa_results is False:
+                        return False
 
                 tfa_res = try_get(tfa_results, lambda x: x[0][5], list)
                 if tfa_res:
