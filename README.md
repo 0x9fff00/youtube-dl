@@ -17,7 +17,7 @@ youtube-dl - download videos from youtube.com or other video platforms
 
 # INSTALLATION
 
-To install it right away for all UNIX users (Linux, OS X, etc.), type:
+To install it right away for all UNIX users (Linux, macOS, etc.), type:
 
     sudo curl -L https://yt-dl.org/downloads/latest/youtube-dl -o /usr/local/bin/youtube-dl
     sudo chmod a+rx /usr/local/bin/youtube-dl
@@ -35,7 +35,7 @@ You can also use pip:
     
 This command will update youtube-dl if you have already installed it. See the [pypi page](https://pypi.python.org/pypi/youtube_dl) for more information.
 
-OS X users can install youtube-dl with [Homebrew](https://brew.sh/):
+macOS users can install youtube-dl with [Homebrew](https://brew.sh/):
 
     brew install youtube-dl
 
@@ -93,8 +93,8 @@ Alternatively, refer to the [developer instructions](#developer-instructions) fo
 
 ## Network Options:
     --proxy URL                      Use the specified HTTP/HTTPS/SOCKS proxy.
-                                     To enable experimental SOCKS proxy, specify
-                                     a proper scheme. For example
+                                     To enable SOCKS proxy, specify a proper
+                                     scheme. For example
                                      socks5://127.0.0.1:1080/. Pass in an empty
                                      string (--proxy "") for direct connection
     --socket-timeout SECONDS         Time to wait before giving up, in seconds
@@ -106,19 +106,18 @@ Alternatively, refer to the [developer instructions](#developer-instructions) fo
     --geo-verification-proxy URL     Use this proxy to verify the IP address for
                                      some geo-restricted sites. The default
                                      proxy specified by --proxy (or none, if the
-                                     options is not present) is used for the
+                                     option is not present) is used for the
                                      actual downloading.
     --geo-bypass                     Bypass geographic restriction via faking
-                                     X-Forwarded-For HTTP header (experimental)
+                                     X-Forwarded-For HTTP header
     --no-geo-bypass                  Do not bypass geographic restriction via
                                      faking X-Forwarded-For HTTP header
-                                     (experimental)
     --geo-bypass-country CODE        Force bypass geographic restriction with
                                      explicitly provided two-letter ISO 3166-2
-                                     country code (experimental)
+                                     country code
     --geo-bypass-ip-block IP_BLOCK   Force bypass geographic restriction with
                                      explicitly provided IP block in CIDR
-                                     notation (experimental)
+                                     notation
 
 ## Video Selection:
     --playlist-start NUMBER          Playlist video to start at (default is 1)
@@ -209,7 +208,7 @@ Alternatively, refer to the [developer instructions](#developer-instructions) fo
     --playlist-reverse               Download playlist videos in reverse order
     --playlist-random                Download playlist videos in random order
     --xattr-set-filesize             Set file xattribute ytdl.filesize with
-                                     expected file size (experimental)
+                                     expected file size
     --hls-prefer-native              Use the native HLS downloader instead of
                                      ffmpeg
     --hls-prefer-ffmpeg              Use ffmpeg instead of the native HLS
@@ -428,9 +427,9 @@ Alternatively, refer to the [developer instructions](#developer-instructions) fo
                                      default; fix file if we can, warn
                                      otherwise)
     --prefer-avconv                  Prefer avconv over ffmpeg for running the
-                                     postprocessors (default)
-    --prefer-ffmpeg                  Prefer ffmpeg over avconv for running the
                                      postprocessors
+    --prefer-ffmpeg                  Prefer ffmpeg over avconv for running the
+                                     postprocessors (default)
     --ffmpeg-location PATH           Location of the ffmpeg/avconv binary;
                                      either the path to the binary or its
                                      containing directory.
@@ -443,7 +442,7 @@ Alternatively, refer to the [developer instructions](#developer-instructions) fo
 
 # CONFIGURATION
 
-You can configure youtube-dl by placing any supported command line option to a configuration file. On Linux and OS X, the system wide configuration file is located at `/etc/youtube-dl.conf` and the user wide configuration file at `~/.config/youtube-dl/config`. On Windows, the user wide configuration file locations are `%APPDATA%\youtube-dl\config.txt` or `C:\Users\<user name>\youtube-dl.conf`. Note that by default configuration file may not exist so you may need to create it yourself.
+You can configure youtube-dl by placing any supported command line option to a configuration file. On Linux and macOS, the system wide configuration file is located at `/etc/youtube-dl.conf` and the user wide configuration file at `~/.config/youtube-dl/config`. On Windows, the user wide configuration file locations are `%APPDATA%\youtube-dl\config.txt` or `C:\Users\<user name>\youtube-dl.conf`. Note that by default configuration file may not exist so you may need to create it yourself.
 
 For example, with the following configuration file youtube-dl will always extract the audio, not copy the mtime, use a proxy and save all videos under `Movies` directory in your home directory:
 ```
@@ -512,6 +511,8 @@ The basic usage is not to set any template arguments when downloading a single f
  - `timestamp` (numeric): UNIX timestamp of the moment the video became available
  - `upload_date` (string): Video upload date (YYYYMMDD)
  - `uploader_id` (string): Nickname or id of the video uploader
+ - `channel` (string): Full name of the channel the video is uploaded on
+ - `channel_id` (string): Id of the channel
  - `location` (string): Physical location where the video was filmed
  - `duration` (numeric): Length of the video in seconds
  - `view_count` (numeric): How many users have watched the video on the platform
@@ -871,7 +872,7 @@ Either prepend `https://www.youtube.com/watch?v=` or separate the ID from the op
 
 Use the `--cookies` option, for example `--cookies /path/to/cookies/file.txt`.
 
-In order to extract cookies from browser use any conforming browser extension for exporting cookies. For example, [cookies.txt](https://chrome.google.com/webstore/detail/cookiestxt/njabckikapfpffapmjgojcnbfjonfjfg) (for Chrome) or [Export Cookies](https://addons.mozilla.org/en-US/firefox/addon/export-cookies/) (for Firefox).
+In order to extract cookies from browser use any conforming browser extension for exporting cookies. For example, [cookies.txt](https://chrome.google.com/webstore/detail/cookiestxt/njabckikapfpffapmjgojcnbfjonfjfg) (for Chrome) or [cookies.txt](https://addons.mozilla.org/en-US/firefox/addon/cookies-txt/) (for Firefox).
 
 Note that the cookies file must be in Mozilla/Netscape format and the first line of the cookies file must be either `# HTTP Cookie File` or `# Netscape HTTP Cookie File`. Make sure you have correct [newline format](https://en.wikipedia.org/wiki/Newline) in the cookies file and convert newlines if necessary to correspond with your OS, namely `CRLF` (`\r\n`) for Windows and `LF` (`\n`) for Unix and Unix-like systems (Linux, macOS, etc.). `HTTP Error 400: Bad Request` when using `--cookies` is a good sign of invalid newline format.
 
@@ -1023,7 +1024,7 @@ After you have ensured this site is distributing its content legally, you can fo
     ```
 5. Add an import in [`youtube_dl/extractor/extractors.py`](https://github.com/rg3/youtube-dl/blob/master/youtube_dl/extractor/extractors.py).
 6. Run `python test/test_download.py TestDownload.test_YourExtractor`. This *should fail* at first, but you can continually re-run it until you're done. If you decide to add more than one test, then rename ``_TEST`` to ``_TESTS`` and make it into a list of dictionaries. The tests will then be named `TestDownload.test_YourExtractor`, `TestDownload.test_YourExtractor_1`, `TestDownload.test_YourExtractor_2`, etc. Note that tests with `only_matching` key in test's dict are not counted in.
-7. Have a look at [`youtube_dl/extractor/common.py`](https://github.com/rg3/youtube-dl/blob/master/youtube_dl/extractor/common.py) for possible helper methods and a [detailed description of what your extractor should and may return](https://github.com/rg3/youtube-dl/blob/master/youtube_dl/extractor/common.py#L74-L252). Add tests and code for as many as you want.
+7. Have a look at [`youtube_dl/extractor/common.py`](https://github.com/rg3/youtube-dl/blob/master/youtube_dl/extractor/common.py) for possible helper methods and a [detailed description of what your extractor should and may return](https://github.com/rg3/youtube-dl/blob/7f41a598b3fba1bcab2817de64a08941200aa3c8/youtube_dl/extractor/common.py#L94-L303). Add tests and code for as many as you want.
 8. Make sure your code follows [youtube-dl coding conventions](#youtube-dl-coding-conventions) and check the code with [flake8](https://pypi.python.org/pypi/flake8). Also make sure your code works under all [Python](https://www.python.org/) versions claimed supported by youtube-dl, namely 2.6, 2.7, and 3.2+.
 9. When the tests pass, [add](https://git-scm.com/docs/git-add) the new files and [commit](https://git-scm.com/docs/git-commit) them and [push](https://git-scm.com/docs/git-push) the result, like this:
 
@@ -1044,7 +1045,7 @@ Extractors are very fragile by nature since they depend on the layout of the sou
 
 ### Mandatory and optional metafields
 
-For extraction to work youtube-dl relies on metadata your extractor extracts and provides to youtube-dl expressed by an [information dictionary](https://github.com/rg3/youtube-dl/blob/master/youtube_dl/extractor/common.py#L75-L257) or simply *info dict*. Only the following meta fields in the *info dict* are considered mandatory for a successful extraction process by youtube-dl:
+For extraction to work youtube-dl relies on metadata your extractor extracts and provides to youtube-dl expressed by an [information dictionary](https://github.com/rg3/youtube-dl/blob/7f41a598b3fba1bcab2817de64a08941200aa3c8/youtube_dl/extractor/common.py#L94-L303) or simply *info dict*. Only the following meta fields in the *info dict* are considered mandatory for a successful extraction process by youtube-dl:
 
  - `id` (media identifier)
  - `title` (media title)
@@ -1052,7 +1053,7 @@ For extraction to work youtube-dl relies on metadata your extractor extracts and
 
 In fact only the last option is technically mandatory (i.e. if you can't figure out the download location of the media the extraction does not make any sense). But by convention youtube-dl also treats `id` and `title` as mandatory. Thus the aforementioned metafields are the critical data that the extraction does not make any sense without and if any of them fail to be extracted then the extractor is considered completely broken.
 
-[Any field](https://github.com/rg3/youtube-dl/blob/master/youtube_dl/extractor/common.py#L149-L257) apart from the aforementioned ones are considered **optional**. That means that extraction should be **tolerant** to situations when sources for these fields can potentially be unavailable (even if they are always available at the moment) and **future-proof** in order not to break the extraction of general purpose mandatory fields.
+[Any field](https://github.com/rg3/youtube-dl/blob/7f41a598b3fba1bcab2817de64a08941200aa3c8/youtube_dl/extractor/common.py#L188-L303) apart from the aforementioned ones are considered **optional**. That means that extraction should be **tolerant** to situations when sources for these fields can potentially be unavailable (even if they are always available at the moment) and **future-proof** in order not to break the extraction of general purpose mandatory fields.
 
 #### Example
 
@@ -1167,7 +1168,28 @@ title = self._search_regex(
 
 ### Use safe conversion functions
 
-Wrap all extracted numeric data into safe functions from `utils`: `int_or_none`, `float_or_none`. Use them for string to number conversions as well.
+Wrap all extracted numeric data into safe functions from [`youtube_dl/utils.py`](https://github.com/rg3/youtube-dl/blob/master/youtube_dl/utils.py): `int_or_none`, `float_or_none`. Use them for string to number conversions as well.
+
+Use `url_or_none` for safe URL processing.
+
+Use `try_get` for safe metadata extraction from parsed JSON.
+
+Explore [`youtube_dl/utils.py`](https://github.com/rg3/youtube-dl/blob/master/youtube_dl/utils.py) for more useful convenience functions.
+
+#### More examples
+
+##### Safely extract optional description from parsed JSON
+```python
+description = try_get(response, lambda x: x['result']['video'][0]['summary'], compat_str)
+```
+
+##### Safely extract more optional metadata
+```python
+video = try_get(response, lambda x: x['result']['video'][0], dict) or {}
+description = video.get('summary')
+duration = float_or_none(video.get('durationMs'), scale=1000)
+view_count = int_or_none(video.get('views'))
+```
 
 # EMBEDDING YOUTUBE-DL
 
