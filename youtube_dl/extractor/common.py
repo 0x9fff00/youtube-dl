@@ -1350,6 +1350,7 @@ class InfoExtractor(object):
                 f.get('height') if f.get('height') is not None else -1,
                 f.get('width') if f.get('width') is not None else -1,
                 f.get('fps') if f.get('fps') is not None else -1,
+                -10 if 'HDR' in f.get('format_note', '') else 10,
                 f.get('tbr') if f.get('tbr') is not None else -1,
                 f.get('filesize') if f.get('filesize') is not None else -1,
                 f.get('vbr') if f.get('vbr') is not None else -1,
