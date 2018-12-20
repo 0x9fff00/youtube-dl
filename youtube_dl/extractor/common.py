@@ -1343,6 +1343,36 @@ class InfoExtractor(object):
                     ext_preference = -1
                 audio_ext_preference = 0
 
+            if f.get('vcodec') != 'none':
+                vcodec_preference = {
+                    'h263': 0,
+                    'mp4v': 1,
+                    'avc1': 2,
+                    'avc2': 2,
+                    'avc3': 2,
+                    'avc4': 2,
+                    'h264': 2,
+                    'hev1': 3,
+                    'hev2': 3,
+                    'hvc1': 3,
+                    'vp8': 4,
+                    'vp9': 5,
+                    'av01': -1, # TODO: Update this
+                }.get(f.get('vcodec').split('.')[0], -1)
+            else:
+                vcodec_preference = -1
+
+            if f.get('acodec') != 'none':
+                acodec_preference = {
+                    'mp3': 0,
+                    'aac': 1,
+                    'mp4a': 1,
+                    'vorbis': 2,
+                    'opus': 3,
+                }.get(f.get('acodec').split('.')[0], -1)
+            else:
+                acodec_preference = -1
+
             return (
                 preference,
                 f.get('language_preference') if f.get('language_preference') is not None else -1,
@@ -1351,6 +1381,8 @@ class InfoExtractor(object):
                 f.get('width') if f.get('width') is not None else -1,
                 f.get('fps') if f.get('fps') is not None else -1,
                 -10 if 'HDR' in f.get('format_note', '') else 10,
+                vcodec_preference,
+                acodec_preference,
                 f.get('tbr') if f.get('tbr') is not None else -1,
                 f.get('filesize') if f.get('filesize') is not None else -1,
                 f.get('vbr') if f.get('vbr') is not None else -1,
