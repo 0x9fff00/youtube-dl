@@ -1,3 +1,38 @@
+version 2019.01.02
+
+Extractors
+* [discovery] Use geo verification headers (#17838)
++ [packtpub] Add support for subscription.packtpub.com (#18718)
+* [yourporn] Fix extraction (#18583)
++ [acast:channel] Add support for play.acast.com (#18587)
++ [extractors] Add missing age limits (#18621)
++ [rmcdecouverte] Add support for live stream
+* [rmcdecouverte] Bypass geo restriction
+* [rmcdecouverte] Update URL regular expression (#18595, 18697)
+* [manyvids] Fix extraction (#18604, #18614)
+* [bitchute] Fix extraction (#18567)
+
+
+version 2018.12.31
+
+Extractors
++ [bbc] Add support for another embed pattern (#18643)
++ [npo:live] Add support for npostart.nl (#18644)
+* [beeg] Fix extraction (#18610, #18626)
+* [youtube] Unescape HTML for series (#18641)
++ [youtube] Extract more format metadata
+* [youtube] Detect DRM protected videos (#1774)
+* [youtube] Relax HTML5 player regular expressions (#18465, #18466)
+* [youtube] Extend HTML5 player regular expression (#17516)
++ [liveleak] Add support for another embed type and restore original
+  format extraction
++ [crackle] Extract ISM and HTTP formats
++ [twitter] Pass Referer with card request (#18579)
+* [mediasite] Extend URL regular expression (#18558)
++ [lecturio] Add support for lecturio.de (#18562)
++ [discovery] Add support for Scripps Networks watch domains (#17947)
+
+
 version 2018.12.17
 
 Extractors
