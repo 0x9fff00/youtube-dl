@@ -399,6 +399,7 @@ Alternatively, refer to the [developer instructions](#developer-instructions) fo
     --recode-video FORMAT            Encode the video to another format if
                                      necessary (currently supported:
                                      mp4|flv|ogg|webm|mkv|avi)
+    --remux-video FORMAT             Remux the video
     --postprocessor-args ARGS        Give these arguments to the postprocessor
     -k, --keep-video                 Keep the video file on disk after the post-
                                      processing; the video is erased by default

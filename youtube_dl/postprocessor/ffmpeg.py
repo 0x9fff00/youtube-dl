@@ -341,6 +341,26 @@ class FFmpegVideoConvertorPP(FFmpegPostProcessor):
         return [path], information
 
 
+class FFmpegRemuxPP(FFmpegPostProcessor):
+    def __init__(self, downloader=None, format=None):
+        super(FFmpegRemuxPP, self).__init__(downloader)
+        self._format = format
+
+    def run(self, information):
+        path = information['filepath']
+        if information['ext'] == self._format:
+            self._downloader.to_screen('[ffmpeg] Not remuxing video file %s - already is in target format %s' % (path, self._format))
+            return [], information
+        options = ['-c', 'copy']
+        prefix, sep, ext = path.rpartition('.')
+        outpath = prefix + sep + self._format
+        self._downloader.to_screen('[' + 'ffmpeg' + '] Remuxing video from %s to %s, Destination: ' % (information['ext'], self._format) + outpath)
+        self.run_ffmpeg(path, outpath, options)
+        information['filepath'] = outpath
+        information['ext'] = self._format
+        return [path], information
+
+
 class FFmpegEmbedSubtitlePP(FFmpegPostProcessor):
     def run(self, information):
         if information['ext'] not in ('mp4', 'webm', 'mkv'):
