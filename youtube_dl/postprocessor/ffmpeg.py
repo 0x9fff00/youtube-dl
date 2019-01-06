@@ -434,16 +434,33 @@ class FFmpegMetadataPP(FFmpegPostProcessor):
                         metadata[meta_f] = info[info_f]
                     break
 
+        if info['ext'] in ['mkv', 'mka', 'webm']:
+            add('date_released', ('upload_date', 'release_date'))
+            add('description')
+            add('url', 'webpage_url')
+            add('part_number', 'track_number')
+            add('album/artist', 'album_artist')
+            add('album/part_number', 'disc_number')
+            add('album/date_released', 'release_year')
+            add('artist/url', ('uploader_url', 'channel_url'))
+            add('season/title', 'season')
+            add('season/part_number', 'season_number')
+            add('episode/title', 'episode')
+            add('episode/part_number', 'episode_number')
+        else:
+            add('date', ('upload_date', 'release_date'))
+            add(('description', 'comment'), 'description')
+            add('purl', 'webpage_url')
+            add('track', 'track_number')
+            add('album_artist')
+            add('disc', 'disc_number')
+
         add('title', ('track', 'title'))
-        add('date', 'upload_date')
-        add(('description', 'comment'), 'description')
-        add('purl', 'webpage_url')
-        add('track', 'track_number')
-        add('artist', ('artist', 'creator', 'uploader', 'uploader_id'))
+        add('artist', ('artist', 'creator', 'uploader', 'channel', 'uploader_id', 'channel_id'))
         add('genre')
         add('album')
-        add('album_artist')
-        add('disc', 'disc_number')
+        add('license')
+        add('series')
 
         if not metadata:
             self._downloader.to_screen('[ffmpeg] There isn\'t any metadata to add')
