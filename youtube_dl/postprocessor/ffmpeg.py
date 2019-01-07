@@ -454,8 +454,8 @@ class FFmpegMetadataPP(FFmpegPostProcessor):
             add('album_artist')
             add('disc', 'disc_number')
 
-        add('title', ('track', 'title'))
-        add('artist', ('artist', 'creator', 'uploader', 'channel', 'uploader_id', 'channel_id'))
+        add('title', ('title', 'track'))
+        add('artist', ('creator', 'uploader', 'channel', 'artist', 'uploader_id', 'channel_id'))
         add('genre')
         add('album')
         add('license')
