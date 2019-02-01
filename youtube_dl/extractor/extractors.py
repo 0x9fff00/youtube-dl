@@ -692,7 +692,10 @@ from .myvi import (
     MyviEmbedIE,
 )
 from .myvidster import MyVidsterIE
-from .nationalgeographic import NationalGeographicVideoIE
+from .nationalgeographic import (
+    NationalGeographicVideoIE,
+    NationalGeographicTVIE,
+)
 from .naver import NaverIE
 from .nba import NBAIE
 from .nbc import (
@@ -1497,6 +1500,7 @@ from .zattoo import (
     QuantumTVIE,
     QuicklineIE,
     QuicklineLiveIE,
+    SaltTVIE,
     SAKTVIE,
     VTXTVIE,
     WalyTVIE,
