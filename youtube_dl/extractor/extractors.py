@@ -619,6 +619,7 @@ from .mailru import (
     MailRuMusicSearchIE,
 )
 from .makertv import MakerTVIE
+from .malltv import MallTVIE
 from .mangomolo import (
     MangomoloVideoIE,
     MangomoloLiveIE,
@@ -1058,7 +1059,10 @@ from .southpark import (
     SouthParkEsIE,
     SouthParkNlIE
 )
-from .spankbang import SpankBangIE
+from .spankbang import (
+    SpankBangIE,
+    SpankBangPlaylistIE,
+)
 from .spankwire import SpankwireIE
 from .spiegel import SpiegelIE, SpiegelArticleIE
 from .spiegeltv import SpiegeltvIE
@@ -1362,7 +1366,6 @@ from .voxmedia import (
     VoxMediaVolumeIE,
     VoxMediaIE,
 )
-from .vporn import VpornIE
 from .vrt import VRTIE
 from .vrak import VrakIE
 from .vrv import (
