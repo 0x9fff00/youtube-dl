@@ -1356,7 +1356,7 @@ class InfoExtractor(object):
                     ext_preference = -1
                 audio_ext_preference = 0
 
-            if f.get('vcodec') != 'none':
+            if f.get('vcodec') and f.get('vcodec') != 'none':
                 vcodec_preference = {
                     'h263': 0,
                     'mp4v': 1,
@@ -1375,7 +1375,7 @@ class InfoExtractor(object):
             else:
                 vcodec_preference = -1
 
-            if f.get('acodec') != 'none':
+            if f.get('acodec') and f.get('acodec') != 'none':
                 acodec_preference = {
                     'mp3': 0,
                     'aac': 1,
