@@ -1358,19 +1358,20 @@ class InfoExtractor(object):
 
             if f.get('vcodec') and f.get('vcodec') != 'none':
                 vcodec_preference = {
+                    'av01': -1, # TODO: Update this
                     'h263': 0,
                     'mp4v': 1,
-                    'avc1': 2,
-                    'avc2': 2,
-                    'avc3': 2,
-                    'avc4': 2,
-                    'h264': 2,
-                    'hev1': 3,
-                    'hev2': 3,
-                    'hvc1': 3,
-                    'vp8': 4,
-                    'vp9': 5,
-                    'av01': -1, # TODO: Update this
+                    'hev1': 2,
+                    'hev2': 2,
+                    'hvc1': 2,
+                    'vp8': 3,
+                    'vp9': 4,
+                    # prefer h264 because everything supports it
+                    'avc1': 5,
+                    'avc2': 5,
+                    'avc3': 5,
+                    'avc4': 5,
+                    'h264': 5,
                 }.get(f.get('vcodec').split('.')[0], -1)
             else:
                 vcodec_preference = -1
