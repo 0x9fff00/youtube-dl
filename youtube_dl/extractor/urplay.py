@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from .common import InfoExtractor
+from ..utils import parse_iso8601
 
 
 class URPlayIE(InfoExtractor):
@@ -51,6 +52,7 @@ class URPlayIE(InfoExtractor):
             'title': urplayer_data['title'],
             'description': self._og_search_description(webpage),
             'thumbnail': urplayer_data.get('image'),
+            'timestamp': parse_iso8601(self._html_search_meta('uploadDate', webpage)),
             'series': urplayer_data.get('series_title'),
             'subtitles': subtitles,
             'formats': formats,
