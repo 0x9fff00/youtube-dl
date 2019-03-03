@@ -2,18 +2,21 @@
 from __future__ import unicode_literals
 
 from .common import InfoExtractor
+from ..utils import unified_timestamp
 
 
 class URPlayIE(InfoExtractor):
     _VALID_URL = r'https?://(?:www\.)?ur(?:play|skola)\.se/(?:program|Produkter)/(?P<id>[0-9]+)'
     _TESTS = [{
-        'url': 'http://urplay.se/program/190031-tripp-trapp-trad-sovkudde',
-        'md5': 'ad5f0de86f16ca4c8062cd103959a9eb',
+        'url': 'https://urplay.se/program/209701-framtidens-dromhem-min-oppna-fristad',
+        'md5': 'ec2639a7a0eb3fee4a75dae42f9707ab',
         'info_dict': {
-            'id': '190031',
+            'id': '209701',
             'ext': 'mp4',
-            'title': 'Tripp, Trapp, Träd : Sovkudde',
-            'description': 'md5:b86bffdae04a7e9379d1d7e5947df1d1',
+            'timestamp': 1547231700,
+            'upload_date': '20190111',
+            'description': 'md5:9663f54d7fc8cc58c27a4c8db550b5d7',
+            'title': 'Framtidens drömhem : Min öppna fristad',
         },
     }, {
         'url': 'http://urskola.se/Produkter/155794-Smasagor-meankieli-Grodan-i-vida-varlden',
@@ -51,6 +54,7 @@ class URPlayIE(InfoExtractor):
             'title': urplayer_data['title'],
             'description': self._og_search_description(webpage),
             'thumbnail': urplayer_data.get('image'),
+            'timestamp': unified_timestamp(self._html_search_meta('uploadDate', webpage)),
             'series': urplayer_data.get('series_title'),
             'subtitles': subtitles,
             'formats': formats,
