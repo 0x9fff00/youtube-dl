@@ -243,7 +243,7 @@ class IsmFD(FragmentFD):
                         track_written = True
                     self._append_fragment(ctx, frag_content)
                     break
-                except compat_urllib_error.HTTPError as err:
+                except (compat_urllib_error.HTTPError, compat_urllib_error.URLError) as err:
                     count += 1
                     if count <= fragment_retries:
                         self.report_retry_fragment(err, frag_index, count, fragment_retries)

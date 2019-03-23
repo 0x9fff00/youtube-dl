@@ -149,7 +149,7 @@ class HlsFD(FragmentFD):
                             if not success:
                                 return False
                             break
-                        except compat_urllib_error.HTTPError as err:
+                        except (compat_urllib_error.HTTPError, compat_urllib_error.URLError) as err:
                             # Unavailable (possibly temporary) fragments may be served.
                             # First we try to retry then either skip or abort.
                             # See https://github.com/ytdl-org/youtube-dl/issues/10165,

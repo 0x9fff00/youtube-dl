@@ -50,7 +50,7 @@ class DashSegmentsFD(FragmentFD):
                         return False
                     self._append_fragment(ctx, frag_content)
                     break
-                except compat_urllib_error.HTTPError as err:
+                except (compat_urllib_error.HTTPError, compat_urllib_error.URLError) as err:
                     # YouTube may often return 404 HTTP error for a fragment causing the
                     # whole download to fail. However if the same fragment is immediately
                     # retried with the same request data this usually succeeds (1-2 attemps
