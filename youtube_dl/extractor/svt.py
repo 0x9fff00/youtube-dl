@@ -13,7 +13,6 @@ from ..utils import (
     dict_get,
     int_or_none,
     orderedSet,
-    parse_iso8601,
     strip_or_none,
     try_get,
     urljoin,
@@ -215,7 +214,7 @@ class SVTPlayIE(SVTPlayBaseIE):
                 group='json'),
             video_id, fatal=False)
 
-        info_dict = {}
+        thumbnail = self._og_search_thumbnail(webpage)
 
         if data:
             video_info = try_get(
@@ -223,36 +222,18 @@ class SVTPlayIE(SVTPlayBaseIE):
                 dict)
             if video_info:
                 info_dict = self._extract_video(video_info, video_id)
-                info_dict['title'] = data['context']['dispatcher']['stores']['MetaStore']['title']
-                self._adjust_title(info_dict)
-
-        if not info_dict:
-            svt_id = self._search_regex(
-                r'<video[^>]+data-video-id=["\']([\da-zA-Z-]+)',
-                webpage, 'video id')
-
-            info_dict = self._extract_by_video_id(svt_id, webpage)
-
-        if data:
-            video_data = try_get(data, lambda x: x['videoPage']['video'], dict)
-            if video_data:
-                if video_data.get('episodic'):
-                    info_dict.update({
-                        'season_number': video_data.get('season'),
-                        'episode_number': video_data.get('episodeNumber'),
-                    })
-                thumbnail = video_data.get('thumbnail')
-                if thumbnail:
-                    info_dict['thumbnail'] = thumbnail.replace('{format}', 'extralarge')
                 info_dict.update({
-                    'timestamp': parse_iso8601(video_data.get('validFrom')),
-                    'description': video_data.get('description'),
+                    'title': data['context']['dispatcher']['stores']['MetaStore']['title'],
+                    'thumbnail': thumbnail,
                 })
+                self._adjust_title(info_dict)
+                return info_dict
 
-        if not info_dict.get('thumbnail'):
-            info_dict['thumbnail'] = self._og_search_thumbnail(webpage)
+        svt_id = self._search_regex(
+            r'<video[^>]+data-video-id=["\']([\da-zA-Z-]+)',
+            webpage, 'video id')
 
-        return info_dict
+        return self._extract_by_video_id(svt_id, webpage)
 
 
 class SVTSeriesIE(SVTPlayBaseIE):
