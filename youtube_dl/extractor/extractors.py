@@ -834,7 +834,10 @@ from .ooyala import (
     OoyalaIE,
     OoyalaExternalIE,
 )
-from .openload import OpenloadIE
+from .openload import (
+    OpenloadIE,
+    VerystreamIE,
+)
 from .ora import OraTVIE
 from .orf import (
     ORFTVthekIE,
@@ -1034,7 +1037,10 @@ from .skynewsarabia import (
     SkyNewsArabiaIE,
     SkyNewsArabiaArticleIE,
 )
-from .skysports import SkySportsIE
+from .sky import (
+    SkyNewsIE,
+    SkySportsIE,
+)
 from .slideshare import SlideshareIE
 from .slideslive import SlidesLiveIE
 from .slutload import SlutloadIE
