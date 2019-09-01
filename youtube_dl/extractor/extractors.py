@@ -1426,6 +1426,7 @@ from .xfileshare import XFileShareIE
 from .xhamster import (
     XHamsterIE,
     XHamsterEmbedIE,
+    XHamsterUserIE,
 )
 from .xiami import (
     XiamiSongIE,
