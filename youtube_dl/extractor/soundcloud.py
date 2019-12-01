@@ -245,7 +245,7 @@ class SoundcloudIE(InfoExtractor):
     _API_BASE = 'https://api.soundcloud.com/'
     _API_V2_BASE = 'https://api-v2.soundcloud.com/'
     _BASE_URL = 'https://soundcloud.com/'
-    _CLIENT_ID = 'BeGVhOrGmfboy1LtiHTQF6Ejpt9ULJCI'
+    _CLIENT_ID = 'UW9ajvMgVdMMW3cdeBi8lPfN6dvOVGji'
     _IMAGE_REPL_RE = r'-([0-9a-z]+)\.jpg'
 
     _ARTWORK_MAP = {
@@ -276,7 +276,7 @@ class SoundcloudIE(InfoExtractor):
         if secret_token:
             query['secret_token'] = secret_token
 
-        if info.get('downloadable'):
+        if info.get('downloadable') and info.get('has_downloads_left'):
             format_url = update_url_query(
                 info.get('download_url') or track_base_url + '/download', query)
             format_urls.add(format_url)
