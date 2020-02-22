@@ -12,11 +12,9 @@ from ..utils import (
     determine_ext,
     dict_get,
     int_or_none,
-    merge_dicts,
     orderedSet,
     strip_or_none,
     try_get,
-    unified_timestamp,
     urljoin,
     compat_str,
 )
@@ -24,42 +22,6 @@ from ..utils import (
 
 class SVTBaseIE(InfoExtractor):
     _GEO_COUNTRIES = ['SE']
-
-    def _extract_metadata(self, info, video_info):
-        title = video_info.get('title')
-
-        series = video_info.get('programTitle')
-        season_number = int_or_none(video_info.get('season'))
-        episode = video_info.get('episodeTitle')
-        episode_number = int_or_none(video_info.get('episodeNumber'))
-
-        thumbnail = video_info.get('thumbnail')
-        if thumbnail:
-            thumbnail = thumbnail.replace('{format}', 'extralarge')
-        description = video_info.get('description')
-        timestamp = unified_timestamp(try_get(video_info, (
-            lambda x: x['validFrom'], lambda x: x['rights']['validFrom'])))
-        duration = int_or_none(
-            dict_get(video_info, ('materialLength', 'contentDuration')))
-        age_limit = None
-        adult = dict_get(
-            video_info, ('inappropriateForChildren', 'blockedForChildren'),
-            skip_false_values=False)
-        if adult is not None:
-            age_limit = 18 if adult else 0
-
-        return merge_dicts(info, {
-            'title': title,
-            'thumbnail': thumbnail,
-            'description': description,
-            'timestamp': timestamp,
-            'duration': duration,
-            'age_limit': age_limit,
-            'series': series,
-            'season_number': season_number,
-            'episode': episode,
-            'episode_number': episode_number,
-        })
 
     def _extract_video(self, video_info, video_id):
         is_live = dict_get(video_info, ('live', 'simulcast'), default=False)
@@ -106,12 +68,34 @@ class SVTBaseIE(InfoExtractor):
 
                     subtitles.setdefault(subtitle_lang, []).append({'url': subtitle_url})
 
-        return self._extract_metadata({
+        title = video_info.get('title')
+
+        series = video_info.get('programTitle')
+        season_number = int_or_none(video_info.get('season'))
+        episode = video_info.get('episodeTitle')
+        episode_number = int_or_none(video_info.get('episodeNumber'))
+
+        duration = int_or_none(dict_get(video_info, ('materialLength', 'contentDuration')))
+        age_limit = None
+        adult = dict_get(
+            video_info, ('inappropriateForChildren', 'blockedForChildren'),
+            skip_false_values=False)
+        if adult is not None:
+            age_limit = 18 if adult else 0
+
+        return {
             'id': video_id,
+            'title': title,
             'formats': formats,
             'subtitles': subtitles,
+            'duration': duration,
+            'age_limit': age_limit,
+            'series': series,
+            'season_number': season_number,
+            'episode': episode,
+            'episode_number': episode_number,
             'is_live': is_live,
-        }, video_info)
+        }
 
 
 class SVTIE(SVTBaseIE):
@@ -178,23 +162,6 @@ class SVTPlayIE(SVTPlayBaseIE):
             },
         },
     }, {
-        'url': 'https://www.svtplay.se/video/21980718/kara-dagbok/kara-dagbok-sasong-1-avsnitt-8-1',
-        'md5': '45a7ca276a15bce3bb58a15f83f5e2cc',
-        'info_dict': {
-            'id': 'KyVERRZ',
-            'ext': 'mp4',
-            'title': 'Avsnitt 8',
-            'description': 'md5:512721ebad776bc05901effc0e2ac34e',
-            'timestamp': 1556064000,
-            'upload_date': '20190424',
-            'duration': 820,
-            'age_limit': 0,
-            'series': 'Kära dagbok',
-            'season_number': 1,
-            'episode': 'Avsnitt 8',
-            'episode_number': 8,
-        },
-    }, {
         # geo restricted to Sweden
         'url': 'http://www.oppetarkiv.se/video/5219710/trollflojten',
         'only_matching': True,
@@ -247,7 +214,7 @@ class SVTPlayIE(SVTPlayBaseIE):
                 group='json'),
             video_id, fatal=False)
 
-        info_dict = {}
+        thumbnail = self._og_search_thumbnail(webpage)
 
         if data:
             video_info = try_get(
@@ -255,25 +222,18 @@ class SVTPlayIE(SVTPlayBaseIE):
                 dict)
             if video_info:
                 info_dict = self._extract_video(video_info, video_id)
-                info_dict['title'] = data['context']['dispatcher']['stores']['MetaStore']['title']
+                info_dict.update({
+                    'title': data['context']['dispatcher']['stores']['MetaStore']['title'],
+                    'thumbnail': thumbnail,
+                })
                 self._adjust_title(info_dict)
+                return info_dict
 
-        if not info_dict:
-            svt_id = self._search_regex(
-                r'<video[^>]+data-video-id=["\']([\da-zA-Z-]+)',
-                webpage, 'video id')
+        svt_id = self._search_regex(
+            r'<video[^>]+data-video-id=["\']([\da-zA-Z-]+)',
+            webpage, 'video id')
 
-            info_dict = self._extract_by_video_id(svt_id, webpage)
-
-        if data:
-            video_data = try_get(data, lambda x: x['videoPage']['video'], dict)
-            if video_data:
-                info_dict = self._extract_metadata(info_dict, video_data)
-
-        if not info_dict.get('thumbnail'):
-            info_dict['thumbnail'] = self._og_search_thumbnail(webpage)
-
-        return info_dict
+        return self._extract_by_video_id(svt_id, webpage)
 
 
 class SVTSeriesIE(SVTPlayBaseIE):
