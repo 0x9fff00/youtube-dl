@@ -2280,6 +2280,11 @@ class YoutubeIE(YoutubeBaseInfoExtractor):
             thumbnail_url = url_or_none(t.get('url'))
             if not thumbnail_url:
                 continue
+
+            # temporary workaround to always get jpeg
+            if 'webp' in thumbnail_url:
+                thumbnail_url = thumbnail_url.replace('/vi_webp/', '/vi/').replace('.webp', '.jpg')
+
             thumbnails.append({
                 'url': thumbnail_url,
                 'width': int_or_none(t.get('width')),
