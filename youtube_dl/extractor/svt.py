@@ -255,8 +255,7 @@ class SVTPlayIE(SVTPlayBaseIE):
 
         if not info_dict:
             svt_id = self._search_regex(
-                (r'<video[^>]+data-video-id=["\']([\da-zA-Z-]+)',
-                 r'"content":\{"id":"([\da-zA-Z-]+)'),
+                r'<video[^>]+data-video-id=["\']([\da-zA-Z-]+)',
                 webpage, 'video id')
 
             info_dict = self._extract_by_video_id(svt_id, webpage)
