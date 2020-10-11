@@ -1424,7 +1424,7 @@ class InfoExtractor(object):
                     'hvc1': 3,
                     'vp8': 4,
                     'vp9': 5,
-                    'av01': -1, # TODO: Update this
+                    'av01': 6,
                 }.get(f.get('vcodec').split('.')[0], -1)
             else:
                 vcodec_preference = -1
